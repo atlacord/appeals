@@ -1,0 +1,10 @@
+// TSConfig for the Cloudflare Worker in worker/ (proxies /appeals/* to the bot)
+{
+  "extends": "./tsconfig.node.json",
+  "include": ["worker/**/*"],
+  "compilerOptions": {
+    // Cloudflare Workers runtime types instead of Node.js types
+    "types": ["@cloudflare/workers-types"],
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.worker.tsbuildinfo"
+  }
+}

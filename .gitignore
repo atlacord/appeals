@@ -1,0 +1,7 @@
+*.code-workspace
+.DS_Store
+dist
+*.vscode
+.wrangler
+.dev.vars*
+node_modules

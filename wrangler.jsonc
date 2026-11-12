@@ -1,0 +1,11 @@
+{
+  "name": "appeals",
+  "compatibility_date": "2026-11-10",
+  "main": "worker/index.ts",
+  "assets": {
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/appeals", "/appeals/*", "/login", "/logout"]
+  },
+  "vars": { "BOT_ORIGIN": "https://hawky.atla.sh" }
+  // and: npx wrangler secret put PROXY_SECRET
+}
