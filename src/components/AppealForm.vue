@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { computed, onUnmounted, reactive, ref } from 'vue'
 import { submitAppeal, type Appeal } from '@/api'
+
+const props = defineProps<{ cooldownEndsAt: number | null }>()
 
 const MAX_LENGTH = 1000
 
@@ -23,6 +25,26 @@ const errors = computed(() => ({
   behaviorChange: !form.behaviorChange.trim() ? 'What will you do to avoid being banned in the future?' : null
 }))
 
+// Ticks every second while a cooldown is running, so the countdown stays live
+const now = ref(Date.now())
+const timer = setInterval(() => {
+  now.value = Date.now()
+  if (!cooldownRemaining.value)
+    clearInterval(timer)
+}, 1000)
+onUnmounted(() => clearInterval(timer))
+
+const cooldownRemaining = computed(() =>
+  props.cooldownEndsAt ? Math.max(0, props.cooldownEndsAt - now.value) : 0)
+
+const cooldownText = computed(() => {
+  const total = Math.ceil(cooldownRemaining.value / 1000)
+  const h = Math.floor(total / 3600)
+  const m = Math.floor(total / 60) % 60
+  const s = total % 60
+  return [h && `${h}h`, (h || m) && `${m}m`, `${s}s`].filter(Boolean).join(' ')
+})
+
 const valid = computed(() => Object.values(errors.value).every(e => !e))
 
 function showError (field: keyof Appeal) {
@@ -32,7 +54,7 @@ function showError (field: keyof Appeal) {
 async function submit () {
   attempted.value = true
   error.value = null
-  if (!valid.value || submitting.value)
+  if (!valid.value || submitting.value || cooldownRemaining.value)
     return
 
   submitting.value = true
@@ -99,10 +121,14 @@ function reset () {
         </div>
       </div>
 
+      <p v-if="cooldownRemaining" class="cooldown" role="status">
+        You can submit your appeal in <strong>{{ cooldownText }}</strong>. Appeals open 24 hours after your ban.
+      </p>
+
       <p v-if="error" class="submit-error">Couldn't submit your appeal: {{ error }}</p>
 
       <div class="actions">
-        <button class="action-btn primary" type="submit" :disabled="submitting">
+        <button class="action-btn primary" type="submit" :disabled="submitting || !!cooldownRemaining">
           {{ submitting ? 'Submitting…' : 'Submit Appeal' }}
         </button>
       </div>
@@ -199,6 +225,17 @@ input::placeholder, textarea::placeholder {
   font-size: .875rem;
   margin: 1.25rem 0 0;
   padding: .5rem .75rem;
+}
+.cooldown {
+  background: color-mix(in srgb, var(--primary), transparent 85%);
+  border-radius: var(--roundness);
+  font-size: .875rem;
+  margin: 1.25rem 0 0;
+  padding: .5rem .75rem;
+}
+.cooldown strong {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
 }
 .actions {
   display: flex;

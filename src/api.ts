@@ -11,6 +11,8 @@ export interface Me {
   username: string
   globalName: string | null
   avatarURL: string
+  // When the user can appeal after a recent ban (ms timestamp), or null if they can appeal now
+  appealCooldownEndsAt: number | null
 }
 
 // Routes on the modmail bot's web server (bot/src/appeals.js).

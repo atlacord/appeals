@@ -33,7 +33,7 @@ onMounted(async () => {
 
       <template v-else>
         <user-panel :me="me" class="mb"/>
-        <appeal-form/>
+        <appeal-form :cooldown-ends-at="me.appealCooldownEndsAt"/>
       </template>
     </div>
   </div>
