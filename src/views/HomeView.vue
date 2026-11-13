@@ -27,13 +27,17 @@ onMounted(async () => {
       <p v-if="loading" class="status">Loading…</p>
 
       <div v-else-if="!me" class="login card">
-        <p class="status">Log in with Discord so we know who's appealing.</p>
+        <p class="status">Log in with Discord to proceed</p>
         <a class="action-btn primary" :href="LOGIN_PATH">Log in with Discord</a>
       </div>
 
       <template v-else>
         <user-panel :me="me" class="mb"/>
-        <appeal-form :cooldown-ends-at="me.appealCooldownEndsAt"/>
+        <appeal-form v-if="me.banned" :cooldown-ends-at="me.appealCooldownEndsAt"/>
+        <div v-else class="notice card">
+          <p class="status">You aren't banned from the server, so there's nothing to appeal.</p>
+          <a class="action-btn primary" href="https://discord.gg/avatar">Join the server</a>
+        </div>
       </template>
     </div>
   </div>
@@ -71,7 +75,7 @@ onMounted(async () => {
   margin: 0 0 1rem;
   text-align: center;
 }
-.login {
+.login, .notice {
   align-items: center;
   background: var(--bg-dark-2);
   border-radius: var(--roundness);

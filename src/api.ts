@@ -11,6 +11,8 @@ export interface Me {
   username: string
   globalName: string | null
   avatarURL: string
+  // Whether the user is banned from the main server (the form is only shown if so)
+  banned: boolean
   // When the user can appeal after a recent ban (ms timestamp), or null if they can appeal now
   appealCooldownEndsAt: number | null
 }
