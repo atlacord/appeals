@@ -20,14 +20,14 @@ onMounted(async () => {
 
 <template>
   <div class="page">
-    <p class="page-title">Appeals</p>
-    <p class="subtitle">Banned from the server? Fill out the form below and a moderator will review your appeal. You will also automatically be added to our appeal server so we can communicate with you.</p>
+    <p class="page-title">ATLAcord Ban Appeal</p>
+    <p class="subtitle">Fill out the form below and the staff team will review your appeal. You will also automatically be added to our appeal server so we can communicate with you.</p>
 
     <div class="column">
-      <p v-if="loading" class="status">Loading…</p>
+      <p v-if="loading" class="status">Loading...</p>
 
       <div v-else-if="!me" class="login card">
-        <p class="status">Log in with Discord to proceed</p>
+        <p class="status">Log in with Discord to appeal</p>
         <a class="action-btn primary" :href="LOGIN_PATH">Log in with Discord</a>
       </div>
 
