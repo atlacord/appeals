@@ -7,6 +7,14 @@
     <title>ATLAcord Ban Appeals</title>
   </head>
   <body>
+    <script>
+      // Apply the saved theme before first paint to avoid a flash (see src/theme.ts)
+      try {
+        const t = localStorage.getItem('theme')
+          || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
+        document.documentElement.dataset.theme = t
+      } catch {}
+    </script>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
