@@ -157,6 +157,7 @@ function reset () {
   color: #fff;
   font-weight: 600;
   padding: .5rem var(--roundness);
+  text-align: center;
 }
 .card-body {
   padding: 1.25rem;
@@ -196,7 +197,7 @@ textarea {
   resize: vertical;
 }
 input:hover:not(:focus), textarea:hover:not(:focus) {
-  border-color: color-mix(in srgb, var(--bg-dark-3), white 15%);
+  border-color: var(--primary);
 }
 input:focus, textarea:focus {
   border-color: color-mix(in srgb, var(--primary), white 10%);
