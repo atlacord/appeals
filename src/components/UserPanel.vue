@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { LOGOUT_PATH, type Me } from '@/api'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 
 defineProps<{ me: Me }>()
 
@@ -18,6 +19,7 @@ const DEFAULT_AVATAR = 'https://cdn.discordapp.com/embed/avatars/0.png'
       <p class="display-name">{{ me.globalName || me.username }}</p>
       <p class="username">{{ me.username }}</p>
     </div>
+    <theme-toggle/>
     <a class="icon-btn logout" :href="LOGOUT_PATH" title="Log out" aria-label="Log out">
       <!-- Sign-out icon -->
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
