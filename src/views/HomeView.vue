@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import { fetchMe, LOGIN_PATH, type Me } from '@/api'
 import AppealForm from '@/components/AppealForm.vue'
 import UserPanel from '@/components/UserPanel.vue'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 
 const me = ref<Me | null>(null)
 const loading = ref(true)
@@ -20,6 +21,12 @@ onMounted(async () => {
 
 <template>
   <div class="page">
+    <header class="top-bar">
+      <user-panel v-if="me" :me="me" class="user"/>
+      <template v-else>
+        <theme-toggle boxed/>
+      </template>
+    </header>
     <p class="page-title">ATLAcord Ban Appeal</p>
     <p class="subtitle">Fill out the form below and the staff team will review your appeal. You will also automatically be added to our appeal server so we can communicate with you.</p>
 
@@ -32,11 +39,10 @@ onMounted(async () => {
       </div>
 
       <template v-else>
-        <user-panel :me="me" class="mb"/>
         <appeal-form v-if="me.banned" :cooldown-ends-at="me.appealCooldownEndsAt"/>
         <div v-else class="notice card">
           <p class="status">You aren't banned from the server, so there's nothing to appeal.</p>
-          <a class="action-btn primary" href="https://discord.gg/avatar">Join the server</a>
+          <a class="action-btn primary" href="https://discord.gg/avatar">Join Server</a>
         </div>
       </template>
     </div>
@@ -49,7 +55,14 @@ onMounted(async () => {
   min-height: 100dvh;
   padding: 1rem 4rem 2rem;
 }
-/* Same as the dashboard's Threads page title */
+.top-bar {
+  align-items: center;
+  display: flex;
+  gap: .5rem;
+  justify-content: flex-end;
+  margin-bottom: .5rem;
+  min-height: 2.75rem;
+}
 .page-title {
   font-size: 2.25rem;
   margin: 0;
@@ -66,8 +79,8 @@ onMounted(async () => {
   margin: 0 auto;
   max-width: 40rem;
 }
-.mb {
-  margin-bottom: 1rem;
+.user {
+  width: 14rem;
 }
 .status {
   color: var(--text-muted);
