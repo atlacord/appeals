@@ -6,6 +6,12 @@ const props = defineProps<{ cooldownEndsAt: number | null }>()
 
 const MAX_LENGTH = 1000
 
+const FORM_QUESTIONS = {
+  one: 'Why were you banned?',
+  two: 'Why do you feel that you should be unbanned?',
+  three: 'What will you do to avoid being banned in the future?'
+};
+
 const form = reactive<Appeal>({
   banReason: '',
   appealReason: '',
@@ -20,9 +26,9 @@ const submitted = ref(false)
 const error = ref<string | null>(null)
 
 const errors = computed(() => ({
-  banReason: !form.banReason.trim() ? 'Why were you banned?' : null,
-  appealReason: !form.appealReason.trim() ? 'Why do you feel that you should be unbanned?' : null,
-  behaviorChange: !form.behaviorChange.trim() ? 'What will you do to avoid being banned in the future?' : null
+  banReason: !form.banReason.trim() ? FORM_QUESTIONS.one : null,
+  appealReason: !form.appealReason.trim() ? FORM_QUESTIONS.two : null,
+  behaviorChange: !form.behaviorChange.trim() ? FORM_QUESTIONS.three : null
 }))
 
 // Ticks every second while a cooldown is running, so the countdown stays live
@@ -87,12 +93,12 @@ function reset () {
 
     <div v-if="submitted" class="card-body success">
       <p class="success-title">Appeal submitted</p>
-      <p class="muted">Thanks! You have been added to our appeal server. The moderation team will review your appeal and get back to you through modmail.</p>
+      <p class="muted">Thanks! You have been added to our appeal server, Lake Laogai. The staff team will review your appeal and get back to you via our modmail bot, Hawky.</p>
     </div>
 
     <form v-else class="card-body" novalidate @submit.prevent="submit">
       <div class="field">
-        <label for="banReason">Why were you banned?</label>
+        <label for="banReason">{{FORM_QUESTIONS.one}}</label>
         <textarea id="banReason" v-model="form.banReason" rows="4" :maxlength="MAX_LENGTH"
           :class="{ invalid: showError('banReason') }" @blur="touched.banReason = true"></textarea>
         <div class="field-footer">
@@ -102,7 +108,7 @@ function reset () {
       </div>
 
       <div class="field">
-        <label for="appealReason">Why should you be unbanned?</label>
+        <label for="appealReason">{{FORM_QUESTIONS.two}}</label>
         <textarea id="appealReason" v-model="form.appealReason" rows="6" :maxlength="MAX_LENGTH"
           :class="{ invalid: showError('appealReason') }" @blur="touched.appealReason = true"></textarea>
         <div class="field-footer">
@@ -112,7 +118,7 @@ function reset () {
       </div>
 
       <div class="field">
-        <label for="behaviorChange">What will you do to avoid being banned in the future?</label>
+        <label for="behaviorChange">{{FORM_QUESTIONS.three}}</label>
         <textarea id="behaviorChange" v-model="form.behaviorChange" rows="6" :maxlength="MAX_LENGTH"
           :class="{ invalid: showError('behaviorChange') }" @blur="touched.behaviorChange = true"></textarea>
         <div class="field-footer">
@@ -122,7 +128,7 @@ function reset () {
       </div>
 
       <p v-if="cooldownRemaining" class="cooldown" role="status">
-        You can submit your appeal in <strong>{{ cooldownText }}</strong>. Appeals open 24 hours after your ban.
+        You can submit your appeal in <strong>{{ cooldownText }}</strong>. You are eligible to appeal starting 6 hours after your ban.
       </p>
 
       <p v-if="error" class="submit-error">Couldn't submit your appeal: {{ error }}</p>

@@ -4,17 +4,17 @@ import { LOGOUT_PATH, type Me } from '@/api'
 
 defineProps<{ me: Me }>()
 
-// Fall back to Discord's default avatar if the user's can't be loaded
+// Use default avatar icon if the app can't load the user's avatar
 const avatarFailed = ref(false)
 const DEFAULT_AVATAR = 'https://cdn.discordapp.com/embed/avatars/0.png'
 </script>
 
-<!-- Same as the dashboard's sidebar user panel -->
 <template>
   <div class="user-panel">
     <img class="avatar" :src="avatarFailed ? DEFAULT_AVATAR : me.avatarURL" alt=""
       @error="avatarFailed = true">
     <div class="names">
+      <p class="logged-in-as">Logged in as</p>
       <p class="display-name">{{ me.globalName || me.username }}</p>
       <p class="username">{{ me.username }}</p>
     </div>
@@ -66,7 +66,12 @@ const DEFAULT_AVATAR = 'https://cdn.discordapp.com/embed/avatars/0.png'
   color: var(--text-muted);
   font-size: .75rem;
 }
-/* Same as the dashboard's .icon-btn */
+.logged-in-as {
+  color: var(--text-muted);
+  font-size: .6rem;
+  margin: 0;
+}
+/* Reuse login icon design from modmail dashboard */
 .icon-btn {
   align-items: center;
   border-radius: var(--roundness);
