@@ -39,7 +39,10 @@ onMounted(async () => {
       </div>
 
       <template v-else>
-        <appeal-form v-if="me.banned" :cooldown-ends-at="me.appealCooldownEndsAt"/>
+        <div v-if="me.banned && me.appealBanned" class="notice card" role="alert">
+          <p class="status error">Your ban is unappealable.</p>
+        </div>
+        <appeal-form v-else-if="me.banned" :cooldown-ends-at="me.appealCooldownEndsAt"/>
         <div v-else class="notice card">
           <p class="status">You aren't banned from the server, so there's nothing to appeal.</p>
           <a class="action-btn primary" href="https://discord.gg/avatar">Join Server</a>
@@ -87,6 +90,10 @@ onMounted(async () => {
   font-family: var(--thread-text);
   margin: 0 0 1rem;
   text-align: center;
+}
+.status.error {
+  color: var(--red);
+  margin: 0;
 }
 .login, .notice {
   align-items: center;

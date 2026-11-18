@@ -9,10 +9,13 @@ export interface Appeal {
 export interface Me {
   id: string
   username: string
+  // Discord display name
   globalName: string | null
   avatarURL: string
   // Whether the user is banned from the main server (the form is only shown if so)
   banned: boolean
+  // Whether the user is banned from the appeal server. If true, the user's ban is considered unappealable
+  appealBanned: boolean
   // When the user can appeal after a recent ban (ms timestamp), or null if they can appeal now
   appealCooldownEndsAt: number | null
 }
@@ -33,6 +36,7 @@ export async function fetchMe (): Promise<Me | null> {
   return res.json()
 }
 
+// Sends appeal to the bot server, which handles thread creation
 export async function submitAppeal (appeal: Appeal): Promise<void> {
   const res = await fetch(APPEAL_ENDPOINT, {
     method: 'POST',
