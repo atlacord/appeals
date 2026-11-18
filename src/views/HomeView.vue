@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import { fetchMe, LOGIN_PATH, type Me } from '@/api'
 import AppealForm from '@/components/AppealForm.vue'
 import UserPanel from '@/components/UserPanel.vue'
@@ -49,6 +50,10 @@ onMounted(async () => {
         </div>
       </template>
     </div>
+
+    <footer class="footer">
+      <router-link to="/privacy">Privacy Policy</router-link>
+    </footer>
   </div>
 </template>
 
@@ -84,6 +89,12 @@ onMounted(async () => {
 }
 .user {
   width: 14rem;
+}
+.footer {
+  font-family: var(--thread-text);
+  font-size: .875rem;
+  margin-top: 2rem;
+  text-align: center;
 }
 .status {
   color: var(--text-muted);
